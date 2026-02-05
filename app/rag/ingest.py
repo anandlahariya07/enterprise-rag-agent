@@ -8,10 +8,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 page_ids = [
-    "de654e343ba9823fbe3281b4f0e53ce8",
-    "d1d54e343ba983928e05817153426a33",
-    "52254e343ba98363a9cc0100654700d2",
-    "13e54e343ba983489e8e016fe3b19940"
+    "ID1...",
+    "Id2...",
+    "Id3...",
+    "Id4..."
 ]
 
 texts = fetch_notion_pages(page_ids)
