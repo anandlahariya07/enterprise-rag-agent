@@ -1,10 +1,10 @@
-=> Enterprise RAG System (Notion + HuggingFace + Qdrant)
+=>> Enterprise RAG System (Notion + HuggingFace + Qdrant)
 
 A production-style Retrieval-Augmented Generation (RAG) system that ingests documents dynamically from Notion, generates embeddings using HuggingFace sentence transformers, stores them in Qdrant Cloud, and answers user queries via a FastAPI service.
 
 This project is designed as a real-world RAG architecture, not a toy demo.
 
-=>  What This System Does
+🚀 What This System Does
 
 Fetches documents dynamically from Notion
 
@@ -16,7 +16,7 @@ Retrieves relevant document chunks for a user query
 
 Returns answers grounded in the source documents
 
-=> Why This Is a Real RAG System
+🧠 Why This Is a Real RAG System
 
 Unlike simple demos:
 
@@ -32,7 +32,7 @@ Cloud-ready architecture
 
 This mirrors how enterprise knowledge assistants are built.
 
-=> High-Level Architecture
+🏗️ High-Level Architecture
 Notion (Data Source)
         ↓
 Ingestion Pipeline
@@ -48,7 +48,17 @@ FastAPI (/query endpoint)
         ↓
 Answer Generator
 
-=> Project Structure
+## Architecture Overview
+- app/rag: ingestion and retrieval logic
+- app/agents: agent-based answer generation
+- app/utils: configuration and external integrations
+- main.py: application entry point
+
+## Branches
+- main: Production-ready RAG (Notion + HF + Qdrant)
+- old-local-embedding: Initial assignment version
+
+📁 Project Structure
 app/
 ├── api/
 │   └── main.py          # FastAPI entry point
@@ -78,7 +88,7 @@ Vector DB	Qdrant Cloud
 Data Source	Notion API
 RAG Framework	LangChain (light usage)
 Language	Python
-=> Environment Variables
+🔑 Environment Variables
 
 Create a .env file (do not commit it):
 
@@ -89,7 +99,7 @@ QDRANT_API_KEY=your_qdrant_api_key
 
 Use .env.example as reference.
 
-=> Ingestion Flow (One-Time or Periodic)
+📥 Ingestion Flow (One-Time or Periodic)
 
 Run ingestion to fetch and index documents:
 
@@ -176,9 +186,6 @@ Designed for safe deployment to cloud platforms
 ✨ Author Notes
 
 This project is built as a learning-to-production journey, focusing on:
-
 Correct architecture
-
 Real-world constraints
-
 Clean evolution
