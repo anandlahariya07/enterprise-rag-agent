@@ -1,18 +1,23 @@
 from fastapi import FastAPI
-from app.rag.retriever import get_retriever
 from app.agents.answer_agent import answer_question
-
-app = FastAPI(title="Enterprise RAG Agent")
+import time
+from app.rag.retriever import get_retriever
 
 retriever = get_retriever()
+app = FastAPI(title="Enterprise RAG Agent")
 
 @app.post("/query")
 def query(data: dict):
+    start_time = time.time()
+
     question = data["question"]
-    docs = retriever.invoke(question)
-    context = "\n".join([d.page_content for d in docs])
-    answer = answer_question(context, question)
+    session_id = data["session_id"]
+    answer = answer_question(session_id, question, retriever=retriever)
+
+    total_time = time.time() - start_time
+    print(f"TOTAL API TIME: {total_time:.2f}s")
 
     return {
-        "answer": answer
+        "answer": answer,
+        "response_time_seconds": round(total_time, 2)
     }

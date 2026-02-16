@@ -1,31 +1,27 @@
-from langchain_community.embeddings import HuggingFaceEmbeddings
-from app.utils.notion_loader import fetch_notion_pages
-from langchain_core.documents import Document
-import os
-from langchain_qdrant import Qdrant
+from app.loaders.notion_loader import NotionLoader
+from app.ingest.pipeline import IngestionPipeline
+from app.loaders.pdf_loader import PDFLoader
+from app.loaders.multi_loader import MultiLoader
 
-from dotenv import load_dotenv
-load_dotenv()
 
-page_ids = [
-    "de654e343ba9823fbe3281b4f0e53ce8",
-    "d1d54e343ba983928e05817153426a33",
-    "52254e343ba98363a9cc0100654700d2",
-    "13e54e343ba983489e8e016fe3b19940"
-]
+def run():
+    notion_loader = NotionLoader(page_ids = [
+        "de654e343ba9823fbe3281b4f0e53ce8",
+        "d1d54e343ba983928e05817153426a33",
+        "52254e343ba98363a9cc0100654700d2",
+        "13e54e343ba983489e8e016fe3b19940"
+    ])
 
-texts = fetch_notion_pages(page_ids)
-docs = [Document(page_content=t) for t in texts]
+    pdf_loader = PDFLoader(folder_path="data")
 
-embeddings = HuggingFaceEmbeddings(
-    model_name="sentence-transformers/all-MiniLM-L6-v2"
-)
+    mulit_loader = MultiLoader([
+        notion_loader,
+        pdf_loader
+    ])
 
-db = Qdrant.from_documents(
-    docs,
-    embedding=embeddings,
-    url=os.getenv("QDRANT_URL"),
-    api_key=os.getenv("QDRANT_API_KEY"),
-    collection_name="notion_docs",
-)
-print("Documents indexed (using local embeddings)")
+    pipeline = IngestionPipeline(loader=mulit_loader)
+    pipeline.run()
+
+
+if __name__ == "__main__":
+    run()
